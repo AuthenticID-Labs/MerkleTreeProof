@@ -11,7 +11,6 @@ const CONTRACT_ADDRESS = '0xA0C7Aaf36175B62663a4319EB309Da47A19ec518';
 export const generateMerkleTreeRoot = (input: string[]) => {
   const tree = generateMerkleTree(input);
   const root = `0x${tree.getRoot().toString('hex')}`;
-  console.log('root: ', root);
 
   return root;
 }
@@ -20,7 +19,6 @@ export const generateMerkleTree = (input: string[]) => {
   const sortedInput = input.sort();
   const leaves = sortedInput.map(entry => sha256(entry));
   const tree = new MerkleTree(leaves, sha256);
-  console.log('tree: ', tree);
   
   return tree;
 }
