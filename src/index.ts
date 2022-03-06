@@ -23,12 +23,17 @@ export const generateMerkleTree = (input: string[]) => {
   return tree;
 }
 
-export const doMerkleProof = (tree: MerkleTree, toTest: string, root: string) => {
+export const doMerkleVerify = (tree: MerkleTree, toTest: string, root: string) => {
   const leaf = sha256(toTest);
   const proof = tree.getProof(leaf);
   const result = tree.verify(proof, leaf, root);
   
   return result;
+}
+
+export const getMerkleProof = (tree: MerkleTree, leaf: string) => {
+  const _leaf = sha256(leaf);
+  return tree.getHexProof(_leaf);
 }
 
 export const getMerkleTreeRoot = async (provider: providers.Provider | Signer, address: string): Promise<string> => {
