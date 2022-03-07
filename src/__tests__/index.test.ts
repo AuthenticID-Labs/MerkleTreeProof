@@ -5,27 +5,13 @@ function sha256(data: string) {
   return crypto.createHash('sha256').update(data).digest()
 }
 
-test('Create User One', () => {
-  const leaves = [
-    "CountryCode:USA",
-    "EyeColor:HAZEL",
-    "HairColor:BLONDE",
-    "Sex:FEMALE",
-  ];
 
-  const tree = generateMerkleTree(leaves);
-  console.log('leaves: ', tree.getHexLeaves());
-  console.log('hex root: ', tree.getHexRoot());
-  console.log('eye proof: ',tree.getHexProof(sha256(leaves[1])));
-  console.log('hair proof: ',tree.getHexProof(sha256(leaves[2])));
-  console.log('eye merkle proof: ', getMerkleProof(tree, 'EyeColor:HAZEL'))
-})
 
 test('Create User Two', () => {
   const leaves = [
     "CountryCode:MEX",
-    "EyeColor:BLUE",
-    "HairColor:BLONDE",
+    "EyeColor:GREEN",
+    "HairColor:PINK",
     "Sex:MALE",
   ];
 
@@ -34,6 +20,7 @@ test('Create User Two', () => {
   console.log('hex root: ', tree.getHexRoot());
   console.log('eye proof: ',tree.getHexProof(sha256(leaves[1])));
   console.log('hair proof: ',tree.getHexProof(sha256(leaves[2])));
+  console.log(getMerkleProof(tree, 'EyeColor:GREEN'))
 })
 
 test('Exists in tree', () => {

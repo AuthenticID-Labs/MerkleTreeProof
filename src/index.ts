@@ -7,7 +7,7 @@ function sha256(data: string) {
   return crypto.createHash('sha256').update(data).digest()
 }
 
-const CONTRACT_ADDRESS = '0xA0C7Aaf36175B62663a4319EB309Da47A19ec518';
+const CONTRACT_ADDRESS = '0x5b7D656f9D21d9FC727d8C52eb939661aF28D680';
 export const generateMerkleTreeRoot = (input: string[]) => {
   const tree = generateMerkleTree(input);
   const root = `0x${tree.getRoot().toString('hex')}`;
