@@ -1,5 +1,6 @@
 import { generateMerkleTreeRoot, generateMerkleTree, doMerkleVerify, getMerkleProof } from '../index';
 import * as crypto from 'crypto';
+import MerkleTree from 'merkletreejs';
 
 function sha256(data: string) {
   return crypto.createHash('sha256').update(data).digest()
@@ -16,11 +17,29 @@ test('Create User Two', () => {
   ];
 
   const tree = generateMerkleTree(leaves);
+  
+  const proof = tree.getProof(sha256(leaves[1]));
   console.log('leaves: ', tree.getHexLeaves());
   console.log('hex root: ', tree.getHexRoot());
+  console.log('eye proof: ', proof);
   console.log('eye proof: ',tree.getHexProof(sha256(leaves[1])));
   console.log('hair proof: ',tree.getHexProof(sha256(leaves[2])));
-  console.log(getMerkleProof(tree, 'EyeColor:GREEN'))
+  console.log(getMerkleProof(tree, 'EyeColor:GREEN'));
+  const stringifiedProof = JSON.stringify(proof);
+  console.log(stringifiedProof);
+  const parsedProof = JSON.parse(stringifiedProof)
+  const xx = parsedProof.map((e: any) => {
+    const {position, data} = e;
+    return {position, data: Buffer.from(data)}
+  });
+  console.log('Parsed Proof: ', xx);
+  expect(
+    MerkleTree.verify(
+    xx, 
+    '0x26dbfb5fecd1573e9589cb038879449263b31e665feb754a44c2449903c37377',
+    '0x2641fecfae2f5bb12ee34a92211be38a0b94c2ecd52f15bd1322363bf61e008d',
+    sha256)
+  ).toBe(true);
 })
 
 test('Exists in tree', () => {
@@ -46,6 +65,8 @@ test('Wrong tree', () => {
 
   expect(doMerkleVerify(tree, 'shawn', root)).toBe(false);
 })
+
+
 
 /*
 '0x00000000000000000000000000000000000000000064617665202d3e20626f62',

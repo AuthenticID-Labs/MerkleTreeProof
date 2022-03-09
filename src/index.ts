@@ -33,6 +33,11 @@ export const doMerkleVerify = (tree: MerkleTree, toTest: string, root: string) =
 
 export const getMerkleProof = (tree: MerkleTree, leaf: string) => {
   const _leaf = sha256(leaf);
+  return tree.getProof(_leaf);
+}
+
+export const getMerkleHexProof = (tree: MerkleTree, leaf: string) => {
+  const _leaf = sha256(leaf);
   return tree.getHexProof(_leaf);
 }
 
