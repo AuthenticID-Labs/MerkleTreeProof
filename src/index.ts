@@ -40,7 +40,7 @@ export const verifyProofs = async (proofs: PortableProof[], root: string) => {
   try {
     return proofs.every((proof) => MerkleTree.verify(proof.proof, `${proof.key}:${proof.value}`, root));
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return false;
   }
 }
