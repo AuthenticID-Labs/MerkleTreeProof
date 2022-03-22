@@ -1,6 +1,6 @@
 {
   "name": "@authenticid-labs/merkle-tree-proof",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "prove that an element is a valid member of a Merkle tree on chain with realid.eth",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

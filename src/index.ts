@@ -1,6 +1,6 @@
 import { MerkleTree,  } from 'merkletreejs';
 import { ethers, providers, Signer, utils } from 'ethers';
-import * as MyRegistrar from './contracts/MyRegistrar.json';
+import * as RealID from './contracts/RealID.json';
 import * as crypto from 'crypto';
 
 function sha256(data: string) {
@@ -8,7 +8,7 @@ function sha256(data: string) {
 }
 
 interface Proof {
-  position: 'left' | 'right';
+  position: string;
   data: any;
 }
 
@@ -35,10 +35,10 @@ export const generateMerkleTree = (input: string[]) => {
   return tree;
 }
 
-export const verifyProofs = async (proofs: PortableProof[], root: string) => {
+export const verifyProofs = (proofs: PortableProof[], root: string) => {
 
   try {
-    return proofs.every((proof) => MerkleTree.verify(proof.proof, `${proof.key}:${proof.value}`, root));
+    return proofs.every((proof) => MerkleTree.verify(proof.proof.map(({position, data}) => ({position, data: Buffer.from(data)})), sha256(`${proof.key}:${proof.value}`), root));
   } catch (error) {
     // console.log(error);
     return false;
@@ -65,7 +65,7 @@ export const getMerkleHexProof = (tree: MerkleTree, leaf: string) => {
 
 export const getMerkleTreeRoot = async (provider: providers.Provider | Signer, address: string): Promise<string> => {
   try {
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, MyRegistrar.abi, provider);
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, RealID.abi, provider);
     const root = await contract.getHash(address);
 
     return root;
